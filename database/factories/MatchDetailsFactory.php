@@ -22,13 +22,17 @@ class MatchDetailsFactory extends Factory
         // Create a cricket match first
         $cricketMatch = CricketMatch::factory()->create();
 
-        // Decode the players JSON to get an array of player IDs
-        $playerIds = json_decode($cricketMatch->players, true);
+        // Decode the players JSON to get arrays of player IDs
+        $team1PlayerIds = json_decode($cricketMatch->team1_players, true);
+        $team2PlayerIds = json_decode($cricketMatch->team2_players, true);
+
+        // Combine player IDs from both teams
+        $allPlayerIds = array_merge($team1PlayerIds, $team2PlayerIds);
 
         // Create match details for each player, ensuring no duplicates
         $existingMatchDetails = MatchDetails::where('cricket_match_id', $cricketMatch->id)->pluck('player_id');
 
-        $availablePlayers = collect($playerIds)->diff($existingMatchDetails);
+        $availablePlayers = collect($allPlayerIds)->diff($existingMatchDetails);
 
         if ($availablePlayers->isEmpty()) {
             throw new \Exception('No available players left for match details');
@@ -58,14 +62,18 @@ class MatchDetailsFactory extends Factory
         return $this->afterCreating(function (MatchDetails $matchDetails) {
             // Ensure multiple match details are created for the match
             $cricketMatch = CricketMatch::find($matchDetails->cricket_match_id);
-            $playerIds = json_decode($cricketMatch->players, true);
+
+            // Decode player IDs from both teams
+            $team1PlayerIds = json_decode($cricketMatch->team1_players, true);
+            $team2PlayerIds = json_decode($cricketMatch->team2_players, true);
+            $allPlayerIds = array_merge($team1PlayerIds, $team2PlayerIds);
 
             // Create additional match details if not already created
             $existingPlayerIds = MatchDetails::where('cricket_match_id', $cricketMatch->id)
                 ->pluck('player_id')
                 ->toArray();
 
-            $missingPlayerIds = array_diff($playerIds, $existingPlayerIds);
+            $missingPlayerIds = array_diff($allPlayerIds, $existingPlayerIds);
 
             foreach ($missingPlayerIds as $playerId) {
                 // Only create if the player hasn't already been added
