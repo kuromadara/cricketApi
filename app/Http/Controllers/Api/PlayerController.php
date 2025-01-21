@@ -16,7 +16,12 @@ class PlayerController extends Controller
     {
         // Fetch players with pagination (10 per page by default)
         $perPage = $request->input('per_page', 10);
-        $players = Player::paginate($perPage);
+        $search = $request->input('search');
+        if ($search) {
+            $players = Player::where('name', 'like', '%' . $search . '%')->paginate($perPage);
+        } else {
+            $players = Player::paginate($perPage);
+        }
 
         // Return paginated player data as a resource
         return PlayerResource::collection($players);

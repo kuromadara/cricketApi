@@ -11,11 +11,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
-Route::get('/players', [App\Http\Controllers\Api\PlayerController::class, 'index']);
-Route::post('/players', [App\Http\Controllers\Api\PlayerController::class, 'store']);
-Route::get('/players/{player}', [App\Http\Controllers\Api\PlayerController::class, 'show']);
-Route::put('/players/{player}', [App\Http\Controllers\Api\PlayerController::class, 'update']);
-Route::delete('/players/{player}', [App\Http\Controllers\Api\PlayerController::class, 'destroy']);
+Route::middleware('auth:sanctum')->get('/players', [App\Http\Controllers\Api\PlayerController::class, 'index']);
+Route::middleware('auth:sanctum')->post('/players', [App\Http\Controllers\Api\PlayerController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/players/{player}', [App\Http\Controllers\Api\PlayerController::class, 'show']);
+Route::middleware('auth:sanctum')->put('/players/{player}', [App\Http\Controllers\Api\PlayerController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('/players/{player}', [App\Http\Controllers\Api\PlayerController::class, 'destroy']);
 
 
 Route::get('/matches', [App\Http\Controllers\Api\MatchController::class, 'index']);
