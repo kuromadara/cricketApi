@@ -35,7 +35,7 @@ class StadiumController extends Controller
         $validatedData = $request->validate([
             'cricket_match_id' => 'required|exists:cricket_matches,id',
             'stadium_name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Optional image upload
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif', // Optional image upload
         ]);
 
         // Handle image upload if an image is provided
