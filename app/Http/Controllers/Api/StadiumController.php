@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\StadiumResource;
 use App\Models\Stadium;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class StadiumController extends Controller
@@ -28,6 +29,8 @@ class StadiumController extends Controller
      */
     public function store(Request $request)
     {
+
+        Log::info($request->all());
         // Validate the incoming request
         $validatedData = $request->validate([
             'cricket_match_id' => 'required|exists:cricket_matches,id',
