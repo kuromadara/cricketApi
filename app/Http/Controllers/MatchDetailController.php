@@ -48,7 +48,16 @@ class MatchDetailController extends Controller
             ], 422);
         }
 
-        $matchDetail = MatchDetails::create($validator->validated());
+        $validatedData = $validator->validated();
+
+        // Use updateOrCreate with unique constraint on cricket_match_id and player_id
+        $matchDetail = MatchDetails::updateOrCreate(
+            [
+                'cricket_match_id' => $validatedData['cricket_match_id'],
+                'player_id' => $validatedData['player_id']
+            ],
+            $validatedData
+        );
 
         return new MatchDetailsResource($matchDetail);
     }
@@ -74,7 +83,8 @@ class MatchDetailController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // This method is no longer needed due to updateOrCreate in store method
+        return response()->json(['message' => 'Update method is not supported. Use store method instead.'], 405);
     }
 
     /**
