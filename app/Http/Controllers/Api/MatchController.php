@@ -16,7 +16,18 @@ class MatchController extends Controller
     {
         // Fetch matches with pagination (10 per page by default)
         $perPage = $request->input('per_page', 10);
-        $matches = CricketMatch::paginate($perPage);
+
+        // Create a base query
+        $query = CricketMatch::query();
+
+        // Filter by status if provided
+        if ($request->has('status')) {
+            $status = $request->input('status');
+            $query->where('status', $status);
+        }
+
+        // Paginate the results
+        $matches = $query->paginate($perPage);
 
         // Return paginated match data as a resource
         return MatchResource::collection($matches);
