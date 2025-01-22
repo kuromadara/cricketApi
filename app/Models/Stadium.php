@@ -9,6 +9,8 @@ class Stadium extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'stadiums';
+
     protected $fillable = [
         'cricket_match_id',
         'stadium_name',
