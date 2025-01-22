@@ -30,3 +30,9 @@ Route::post('/stadiums', [App\Http\Controllers\Api\StadiumController::class, 'st
 Route::get('/stadiums/{stadium}', [App\Http\Controllers\Api\StadiumController::class, 'show']);
 Route::put('/stadiums/{stadium}', [App\Http\Controllers\Api\StadiumController::class, 'update']);
 Route::delete('/stadiums/{stadium}', [App\Http\Controllers\Api\StadiumController::class, 'destroy']);
+
+Route::get('/match-details', [App\Http\Controllers\MatchDetailController::class, 'index']);
+Route::post('/match-details', [App\Http\Controllers\MatchDetailController::class, 'store']);
+Route::get('/match-details/{matchDetail}', [App\Http\Controllers\MatchDetailController::class, 'show']);
+Route::put('/match-details/{matchDetail}', [App\Http\Controllers\MatchDetailController::class, 'update']);
+Route::delete('/match-details/{matchDetail}', [App\Http\Controllers\MatchDetailController::class, 'destroy']);
