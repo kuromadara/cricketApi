@@ -16,9 +16,9 @@ class StadiumController extends Controller
      */
     public function index(Request $request)
     {
-        // Fetch stadiums with pagination (10 per page by default)
-        $perPage = $request->input('per_page', 10);
-        $stadiums = Stadium::paginate($perPage);
+        // Fetch stadiums with pagination (10 per page by default), ordered by latest first
+        $perPage = $request->input('per_page', 100);
+        $stadiums = Stadium::latest()->paginate($perPage);
 
         // Return paginated stadium data as a resource
         return StadiumResource::collection($stadiums);
